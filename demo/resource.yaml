@@ -1,0 +1,24 @@
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: demo-image
+spec:
+  type: image
+  params:
+  - name: url
+    value: gcr.io/pivotal-knative/demoapp
+
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: app-sourcecode
+spec:
+  type: git
+  params:
+  - name: revision
+    value: master
+  - name: url
+    value: https://github.com/shashwathi/hellowolrd-go.git
+
