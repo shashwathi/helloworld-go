@@ -1,10 +1,9 @@
-# Use the offical Golang image to create a build artifact.
-# This is based on Debian and sets the GOPATH to /go.
-# https://hub.docker.com/_/golang
-FROM golang:1.12 as builder
-COPY helloworld.go .
-RUN go build -o /helloworld .
+FROM golang:1.14-alpine AS build
 
-FROM alpine
-CMD ["./helloworld"]
-COPY --from=builder /helloworld .
+WORKDIR /src/
+COPY helloworld.go go.* /src/
+RUN CGO_ENABLED=0 go build -o /bin/demo
+
+FROM scratch
+COPY --from=build /bin/demo /bin/demo
+ENTRYPOINT ["/bin/demo"]
